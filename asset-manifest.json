@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.js": "/static/js/main.cbac2163.js",
-    "index.html": "/index.html",
-    "main.cbac2163.js.map": "/static/js/main.cbac2163.js.map"
+    "main.js": "/react-todo/static/js/main.cbac2163.js",
+    "index.html": "/react-todo/index.html",
+    "main.cbac2163.js.map": "/react-todo/static/js/main.cbac2163.js.map"
   },
   "entrypoints": [
     "static/js/main.cbac2163.js"
