@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Addinput from './Addinput';
 import Itemscontainer from './Itemscontainer';
 
 const Todocontainer = () => {
-  const [todos, setTodos] = useState([
-    {
-      id: uuidv4(),
-      title: 'Add task',
-      completed: false,
-    },
-  ]);
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem('todos');
+    return savedTodos ? JSON.parse(savedTodos) : [
+      {
+        id: uuidv4(),
+        title: 'Add task',
+        completed: false,
+      },
+    ];
+  });
 
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   const addTodoItem = (title) => {
     if (title.trim()) {
@@ -28,16 +35,12 @@ const Todocontainer = () => {
     }
   };
 
-  const handleSubmit = (input) => {
-    addTodoItem(input);
-  };
-
-  const handleChange = (id) => {
+  const handleChange = (id, updatedTitle) => {
     setTodos((prevState) => prevState.map((todo) => {
       if (todo.id === id) {
         return {
           ...todo,
-          completed: !todo.completed,
+          title: updatedTitle,
         };
       }
       return todo;
@@ -52,8 +55,12 @@ const Todocontainer = () => {
     <div>
       <h1>Todo List</h1>
       <div style={{ marginTop: '20px' }}>
-        <Addinput handleSubmit={handleSubmit} message={message} />
-        <Itemscontainer todos={todos} delTodo={delTodo} handleChange={handleChange} />
+        <Addinput handleSubmit={addTodoItem} message={message} />
+        <Itemscontainer
+          todos={todos}
+          delTodo={delTodo}
+          handleChange={handleChange}
+        />
       </div>
     </div>
   );
